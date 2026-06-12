@@ -1,6 +1,6 @@
 import logging
 import sys
-from telegram.ext import Application, CommandHandler, CallbackQueryHandler
+from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
 
 from app.config import Config
 from app.database import DatabaseManager

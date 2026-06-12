@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   db:
     image: postgres:15-alpine
@@ -13,7 +11,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
       - ./images:/app/images
     ports:
-      - "5432:5432" # Можно убрать, если не нужен доступ снаружи
+      - "5432:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
@@ -38,7 +36,7 @@ services:
       POSTGRES_HOST: db
       POSTGRES_PORT: 5432
     volumes:
-      - ./data:/app/data # Монтируем JSON файлы, чтобы можно было менять без пересборки
+      - ./data:/app/data
 
 volumes:
   postgres_data:
