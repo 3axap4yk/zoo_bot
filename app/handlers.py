@@ -31,7 +31,6 @@ class BotHandlers:
         """Обработчик команды /start."""
         user = update.effective_user
         
-        # Сохраняем пользователя в БД
         await self.db.upsert_user(
             telegram_id=user.id,
             username=user.username or "",
@@ -55,7 +54,6 @@ class BotHandlers:
             [InlineKeyboardButton("📞 Контакты зоопарка", callback_data="contact_zoo")]
         ]
         
-        # Используем effective_message вместо message
         await update.effective_message.reply_text(
             text, 
             reply_markup=InlineKeyboardMarkup(keyboard), 
@@ -129,7 +127,6 @@ class BotHandlers:
         question = self.quiz_engine.get_question(q_idx)
         option = question["options"][opt_idx]
         
-        # Сохраняем ответ И список животных, которым начислены баллы (для разрешения ничьей)
         context.user_data["answers"].append({
             "question": question["text"],
             "answer": option["text"],
@@ -149,11 +146,9 @@ class BotHandlers:
         scores = context.user_data["scores"]
         answers = context.user_data["answers"]
         
-        # Передаем историю ответов для разрешения ничьей
         animal_key = self.quiz_engine.calculate_result(scores, answers)
         animal = self.quiz_engine.get_animal_data(animal_key)
         
-        # Сохраняем в БД
         await self.db.save_quiz_result(
             telegram_id=user_id,
             animal_key=animal_key,
@@ -235,27 +230,27 @@ class BotHandlers:
                 parse_mode="Markdown"
             )
 
-async def _show_contact_info(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Контактная информация."""
-    text = (
-        "📞 Свяжитесь с отделом опеки!\n\n"
-        f"📧 Email: {self.config.ADMIN_EMAIL}\n"
-        f"💬 Telegram: {self.config.ADMIN_USERNAME}\n\n"
-        "🏢 Адрес: Москва, ул. Большая Грузинская, 1\n"
-        "⏰ Режим работы: Пн-Вс 10:00 - 19:00"
-    )
-    keyboard = [[InlineKeyboardButton("⬅️ Назад", callback_data="back_to_main")]]
-    
-    if update.callback_query:
-        await update.callback_query.edit_message_text(
-            text, 
-            reply_markup=InlineKeyboardMarkup(keyboard)
+    async def _show_contact_info(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+        """Контактная информация."""
+        text = (
+            "📞 Свяжитесь с отделом опеки!\n\n"
+            f"📧 Email: {self.config.ADMIN_EMAIL}\n"
+            f"💬 Telegram: {self.config.ADMIN_USERNAME}\n\n"
+            "🏢 Адрес: Москва, ул. Большая Грузинская, 1\n"
+            "⏰ Режим работы: Пн-Вс 10:00 - 19:00"
         )
-    else:
-        await update.effective_message.reply_text(
-            text, 
-            reply_markup=InlineKeyboardMarkup(keyboard)
-        )
+        keyboard = [[InlineKeyboardButton("⬅️ Назад", callback_data="back_to_main")]]
+        
+        if update.callback_query:
+            await update.callback_query.edit_message_text(
+                text, 
+                reply_markup=InlineKeyboardMarkup(keyboard)
+            )
+        else:
+            await update.effective_message.reply_text(
+                text, 
+                reply_markup=InlineKeyboardMarkup(keyboard)
+            )
 
     async def _show_feedback_menu(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         """Показывает меню с оценками."""
@@ -302,6 +297,5 @@ async def _show_contact_info(self, update: Update, context: ContextTypes.DEFAULT
         
         await query.edit_message_text(
             messages.get(rating, "Спасибо за отзыв!"),
-            reply_markup=InlineKeyboardMarkup(keyboard),
-            parse_mode="Markdown"
+            reply_markup=InlineKeyboardMarkup(keyboard)
         )
