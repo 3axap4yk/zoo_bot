@@ -6,7 +6,7 @@ Base = declarative_base()
 
 
 class User(Base):
-    """Модель пользователя Telegram."""
+    """Модель пользователя Telegram"""
     
     __tablename__ = "users"
     
@@ -23,7 +23,7 @@ class User(Base):
 
 
 class QuizResult(Base):
-    """Модель результата прохождения викторины."""
+    """Модель результата прохождения викторины"""
     
     __tablename__ = "quiz_results"
     
@@ -39,7 +39,7 @@ class QuizResult(Base):
 
 
 class Feedback(Base):
-    """Модель отзыва пользователя."""
+    """Модель отзыва пользователя"""
     
     __tablename__ = "feedback"
     

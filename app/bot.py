@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
 
 
 class ZooBot:
-    """Главный класс приложения."""
+    """Главный класс приложения"""
     
     def __init__(self):
         logger.info("🚀 Инициализация ZooBot...")
@@ -34,25 +34,25 @@ class ZooBot:
         self._setup_routes()
 
     async def _post_init(self, application: Application) -> None:
-        """Вызывается после инициализации приложения, до запуска polling."""
+        """Вызывается после инициализации приложения, до запуска polling"""
         logger.info("🔌 Подключение к базе данных...")
         await self.db.connect()
         logger.info("✅ Бот готов к работе!")
 
     async def _post_shutdown(self, application: Application) -> None:
-        """Вызывается при остановке приложения."""
+        """Вызывается при остановке приложения"""
         logger.info("🔌 Отключение от базы данных...")
         await self.db.disconnect()
         logger.info("✅ Бот остановлен корректно")
 
     def _setup_routes(self) -> None:
-        """Настройка обработчиков команд и кнопок."""
+        """Настройка обработчиков команд и кнопок"""
         self.application.add_handler(CommandHandler("start", self.handlers.start))
         self.application.add_handler(CallbackQueryHandler(self.handlers.button_handler))
         self.application.add_error_handler(self._error_handler)
 
     async def _error_handler(self, update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
-        """Логирование и обработка ошибок."""
+        """Логирование и обработка ошибок"""
         logger.error(f"Update {update} caused error {context.error}", exc_info=context.error)
         
         if isinstance(update, Update) and update.effective_message:

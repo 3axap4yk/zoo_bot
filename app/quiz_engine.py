@@ -30,7 +30,7 @@ class QuizEngine:
         return len(self.questions)
 
     def calculate_result(self, scores: Dict[str, int], answers_history: List[Dict]) -> str:
-        """Определяет победителя с учетом правила ничьей."""
+        """Определяет победителя с учетом правила ничьей"""
         if not scores:
             return "lion"
 

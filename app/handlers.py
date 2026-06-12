@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 
 class BotHandlers:
-    """Обработчики событий Telegram бота."""
+    """Обработчики событий Telegram бота"""
     
     def __init__(self, db: DatabaseManager, quiz_engine: QuizEngine, config: Config):
         self.db = db
@@ -21,14 +21,14 @@ class BotHandlers:
         self.config = config
 
     def _init_user_data(self, context: ContextTypes.DEFAULT_TYPE) -> None:
-        """Инициализирует данные сессии пользователя."""
+        """Инициализирует данные сессии пользователя"""
         context.user_data["quiz_state"] = "active"
         context.user_data["current_question"] = 0
         context.user_data["scores"] = {animal: 0 for animal in self.quiz_engine.animals.keys()}
         context.user_data["answers"] = []
 
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-        """Обработчик команды /start."""
+        """Обработчик команды /start"""
         user = update.effective_user
         
         await self.db.upsert_user(
@@ -61,7 +61,7 @@ class BotHandlers:
         )
 
     async def button_handler(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-        """Центральный маршрутизатор callback-запросов."""
+        """Центральный маршрутизатор callback-запросов"""
         query = update.callback_query
         await query.answer()
         
@@ -119,7 +119,7 @@ class BotHandlers:
             )
 
     async def _handle_answer(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-        """Обрабатывает выбор ответа."""
+        """Обрабатывает выбор ответа"""
         query = update.callback_query
         _, q_idx, opt_idx = query.data.split("_")
         q_idx, opt_idx = int(q_idx), int(opt_idx)
@@ -141,7 +141,7 @@ class BotHandlers:
         await self._show_question(update, context)
 
     async def _show_result(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-        """Показывает результат и сохраняет его в БД."""
+        """Показывает результат и сохраняет его в БД"""
         user_id = update.effective_user.id
         scores = context.user_data["scores"]
         answers = context.user_data["answers"]
@@ -201,7 +201,7 @@ class BotHandlers:
                     logger.error(f"Ошибка отправки фото {image_filename}: {e}")
 
     async def _show_adoption_info(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-        """Информация о программе опеки."""
+        """Информация о программе опеки"""
         text = (
             "🤝 *Программа «Возьми животное под опеку»*\n\n"
             "Ежемесячное пожертвование от 200 ₽ идет на корм, уход и лечение.\n\n"
@@ -231,7 +231,7 @@ class BotHandlers:
             )
 
     async def _show_contact_info(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-        """Контактная информация."""
+        """Контактная информация"""
         text = (
             "📞 Свяжитесь с отделом опеки!\n\n"
             f"📧 Email: {self.config.ADMIN_EMAIL}\n"
@@ -253,7 +253,7 @@ class BotHandlers:
             )
 
     async def _show_feedback_menu(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-        """Показывает меню с оценками."""
+        """Показывает меню с оценками"""
         keyboard = [
             [InlineKeyboardButton("⭐⭐⭐⭐⭐ Отлично!", callback_data="feedback_5")],
             [InlineKeyboardButton("⭐⭐⭐⭐ Хорошо", callback_data="feedback_4")],

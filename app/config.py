@@ -4,7 +4,7 @@ from typing import Optional
 
 
 class Config:
-    """Класс конфигурации приложения."""
+    """Класс конфигурации приложения"""
     
     def __init__(self):
         load_dotenv()
@@ -30,14 +30,14 @@ class Config:
         )
     
     def _get_required(self, key: str) -> str:
-        """Получает обязательную переменную окружения."""
+        """Получает переменную окружения"""
         value = os.getenv(key)
         if not value:
-            raise ValueError(f"❌ Обязательная переменная {key} не найдена в .env")
+            raise ValueError(f"❌ Переменная {key} не найдена в .env")
         return value
     
     def get_postgres_sync_url(self) -> str:
-        """URL для синхронного подключения (например, для alembic)."""
+        """URL для синхронного подключения"""
         return (
             f"postgresql://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}"
             f"@{self.POSTGRES_HOST}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"

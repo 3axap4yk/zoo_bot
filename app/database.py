@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 class DatabaseManager:
-    """Менеджер базы данных PostgreSQL."""
+    """Менеджер базы данных PostgreSQL"""
     
     def __init__(self, config: Config):
         self.config = config
@@ -18,7 +18,7 @@ class DatabaseManager:
         self.async_session_maker = None
     
     async def connect(self) -> None:
-        """Подключение к базе данных."""
+        """Подключение к базе данных"""
         try:
             self.engine = create_async_engine(
                 self.config.DATABASE_URL,
@@ -45,7 +45,7 @@ class DatabaseManager:
             raise
     
     async def disconnect(self) -> None:
-        """Отключение от базы данных."""
+        """Отключение от базы данных"""
         if self.engine:
             await self.engine.dispose()
             logger.info("🔌 Отключение от PostgreSQL")
@@ -64,7 +64,7 @@ class DatabaseManager:
     
     async def upsert_user(self, telegram_id: int, username: str, 
                           first_name: str, last_name: str = None) -> None:
-        """Добавление или обновление пользователя."""
+        """Добавление или обновление пользователя"""
         async for session in self.get_session():
             from sqlalchemy import select
             from app.models import User
@@ -90,7 +90,7 @@ class DatabaseManager:
     
     async def save_quiz_result(self, telegram_id: int, animal_key: str,
                                answers: list, scores: dict) -> None:
-        """Сохранение результата викторины."""
+        """Сохранение результата викторины"""
         async for session in self.get_session():
             from sqlalchemy import select
             from app.models import User, QuizResult
@@ -111,7 +111,7 @@ class DatabaseManager:
     
     async def add_feedback(self, telegram_id: int, rating: int, 
                            comment: str = None) -> None:
-        """Добавление отзыва."""
+        """Добавление отзыва"""
         async for session in self.get_session():
             from sqlalchemy import select
             from app.models import User, Feedback
