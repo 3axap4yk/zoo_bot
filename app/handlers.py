@@ -235,29 +235,27 @@ class BotHandlers:
                 parse_mode="Markdown"
             )
 
-    async def _show_contact_info(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-        """Контактная информация."""
-        text = (
-            "📞 *Свяжитесь с отделом опеки!*\n\n"
-            f"📧 Email: {self.config.ADMIN_EMAIL}\n"
-            f"💬 Telegram: {self.config.ADMIN_USERNAME}\n\n"
-            "*Адрес:* Москва, ул. Большая Грузинская, 1\n"
-            "*Режим работы:* Пн-Вс 10:00 - 19:00"
+async def _show_contact_info(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Контактная информация."""
+    text = (
+        "📞 Свяжитесь с отделом опеки!\n\n"
+        f"📧 Email: {self.config.ADMIN_EMAIL}\n"
+        f"💬 Telegram: {self.config.ADMIN_USERNAME}\n\n"
+        "🏢 Адрес: Москва, ул. Большая Грузинская, 1\n"
+        "⏰ Режим работы: Пн-Вс 10:00 - 19:00"
+    )
+    keyboard = [[InlineKeyboardButton("⬅️ Назад", callback_data="back_to_main")]]
+    
+    if update.callback_query:
+        await update.callback_query.edit_message_text(
+            text, 
+            reply_markup=InlineKeyboardMarkup(keyboard)
         )
-        keyboard = [[InlineKeyboardButton("⬅️ Назад", callback_data="back_to_main")]]
-        
-        if update.callback_query:
-            await update.callback_query.edit_message_text(
-                text, 
-                reply_markup=InlineKeyboardMarkup(keyboard), 
-                parse_mode="Markdown"
-            )
-        else:
-            await update.effective_message.reply_text(
-                text, 
-                reply_markup=InlineKeyboardMarkup(keyboard), 
-                parse_mode="Markdown"
-            )
+    else:
+        await update.effective_message.reply_text(
+            text, 
+            reply_markup=InlineKeyboardMarkup(keyboard)
+        )
 
     async def _show_feedback_menu(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         """Показывает меню с оценками."""

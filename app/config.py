@@ -14,6 +14,7 @@ class Config:
         self.ADMIN_USERNAME: str = os.getenv("ADMIN_USERNAME", "@zoo_manager")
         self.ADMIN_EMAIL: str = os.getenv("ADMIN_EMAIL", "adoption@moscowzoo.ru")
         self.ADOPTION_LINK: str = os.getenv("ADOPTION_LINK", "https://moscowzoo.ru/adoption")
+        self.IMAGES_DIR = "images"
         
         # PostgreSQL
         self.POSTGRES_USER: str = os.getenv("POSTGRES_USER", "zoo_bot_user")
