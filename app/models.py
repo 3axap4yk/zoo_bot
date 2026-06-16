@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, JSON, Text
+from sqlalchemy import Column, Integer, BigInteger, String, DateTime, ForeignKey, JSON, Text
 from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy.sql import func
 
@@ -6,12 +6,12 @@ Base = declarative_base()
 
 
 class User(Base):
-    """Модель пользователя Telegram"""
+    """Модель пользователя Telegram."""
     
     __tablename__ = "users"
     
     id = Column(Integer, primary_key=True, index=True)
-    telegram_id = Column(Integer, unique=True, nullable=False, index=True)
+    telegram_id = Column(BigInteger, unique=True, nullable=False, index=True)
     username = Column(String(255), nullable=True)
     first_name = Column(String(255), nullable=True)
     last_name = Column(String(255), nullable=True)
@@ -23,15 +23,15 @@ class User(Base):
 
 
 class QuizResult(Base):
-    """Модель результата прохождения викторины"""
+    """Модель результата прохождения викторины."""
     
     __tablename__ = "quiz_results"
     
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    animal_key = Column(String(100), nullable=False)  # ключ животного (lion, elephant...)
-    answers_json = Column(JSON, nullable=False)  # массив ответов
-    scores_json = Column(JSON, nullable=False)  # {"lion": 5, "elephant": 3...}
+    animal_key = Column(String(100), nullable=False)
+    answers_json = Column(JSON, nullable=False)
+    scores_json = Column(JSON, nullable=False)
     completed_at = Column(DateTime(timezone=True), server_default=func.now())
     
     # Связи
@@ -39,13 +39,13 @@ class QuizResult(Base):
 
 
 class Feedback(Base):
-    """Модель отзыва пользователя"""
+    """Модель отзыва пользователя."""
     
     __tablename__ = "feedback"
     
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    rating = Column(Integer, nullable=False)  # 1-5
+    rating = Column(Integer, nullable=False)
     comment = Column(Text, nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     
